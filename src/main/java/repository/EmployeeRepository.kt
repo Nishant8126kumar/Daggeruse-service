@@ -14,13 +14,13 @@
 
 
      var mongoClient: MongoClient?=MongoClient("localhost",27017)
-//     var objectMapper=ObjectMapper()
+
      var mongoDatabase:MongoDatabase?=mongoClient?.getDatabase("EmployeeDetails")
 
      fun getAllFretronEmpRecord():List<Employees>
      {
          val empRecord= mutableListOf<Employees>()
- //        var mongoDatabase=mongoClient?.getDatabase("EmployeeDetails")
+
          val mongoCollection=mongoDatabase?.getCollection("employess")
          val mongoCursor=mongoCollection?.find()?.iterator()
          while (mongoCursor!!.hasNext())
@@ -30,11 +30,12 @@
                  doc=mongoCursor.next()
                  doc.remove("_id")
                  val json=JSON.serialize(doc)
-                 var employees=Employees()
-                 employees=objectMapper.readValue(json,Employees::class.java)!!
-                 employees?.let { empRecord?.add(it) }
+
+                 var employees=objectMapper.readValue(json,Employees::class.java)!!
+
+                 empRecord.add(employees)
              } catch (e: Exception) {
-                 println("Exception=:"+e)
+                 println("Exception=:$e")
              }
          }
          return empRecord
@@ -43,10 +44,10 @@
      {
 
          var record= mutableListOf<Employees>()
- //        var mongoDatabase=mongoClient?.getDatabase("EmployeeDetails")
+
          var mongoCollection=mongoDatabase?.getCollection("employess")
          var basicDBObject= BasicDBObject()
-         basicDBObject.put("name",name)
+         basicDBObject["name"] = name
          var mongoCursor=mongoCollection?.find(basicDBObject)?.iterator()
          while (mongoCursor!!.hasNext())
          {
@@ -54,13 +55,14 @@
                  var doc= Document()
                  doc = mongoCursor?.next()
                  doc.remove("_id")
-                 var employees=Employees()
+//                 var employees=Employees()
                  var json=JSON.serialize(doc)
-                 employees=objectMapper.readValue(json,Employees::class.java)
-                 employees?.let { record.add(it) }
+                 var employees=objectMapper.readValue(json,Employees::class.java)
+//                 employees?.let { record.add(it) }
+                 record.add(employees)
 
              } catch (e: Exception) {
-                 println("Exception=:"+e)
+                 println("Exception=:$e")
              }
          }
          println("record Data=: $record")
@@ -70,24 +72,24 @@
      {
          try {
              println("Data Co=:$record")
-//             var mongoDatabase=mongoClient?.getDatabase("EmployeeDetails")
+
              var mongoCollection=mongoDatabase?.getCollection("employess")
              var doc=Document.parse(record.toString())
-             doc.set("uuid",getUUid().toString())
+             doc["uuid"] = getUUid().toString()
              var mongoCursor=mongoCollection?.insertOne(doc)
              println("details=:"+mongoCursor)
          } catch (e: Exception) {
-             println("Exception cooured=:"+e)
+             println("Exception occured=:$e")
          }
      }
-     fun deletRecord(uuid:String)
+     fun deleteRecord(uuid:String)
      {
          try {
              println("From Repository=:$uuid")
              var basicDBObject=BasicDBObject()
              basicDBObject["uuid"] = uuid
              val mongoCollection=mongoDatabase?.getCollection("employess")
-             val mongoCursor=mongoCollection?.deleteOne(basicDBObject)
+             var mongoCursor=mongoCollection?.deleteOne(basicDBObject)
          } catch (e: Exception) {
              println("Exception=:$e")
          }

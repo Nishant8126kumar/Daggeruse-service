@@ -26,7 +26,7 @@
      }
      fun deletRecordByuuid(uuid:String)
      {
-         employeerepository.deletRecord(uuid)
+         employeerepository.deleteRecord(uuid)
 
      }
  }
