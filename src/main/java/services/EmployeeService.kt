@@ -1,6 +1,5 @@
  package services
 
- import org.codehaus.jackson.map.ObjectMapper
  import repository.EmployeeRepository
  import repository.Employees
  import javax.inject.Inject
@@ -11,12 +10,12 @@
 
      fun fretronAllEmpRecord(): List<Employees>? {
 
-         return employeerepository.getAllFretronEmpRecord()!!
+         return employeerepository.getAllFretronEmpRecord()
      }
 
      fun getOneRecordEmp(name: String):List<Employees> {
-         println("In Service=:" + name)
-         return employeerepository?.getRecordByName(name);
+         println("In Service=:$name")
+         return employeerepository.getRecordByName(name)
      }
      fun newEmployeeRecord(record: Employees)
      {
@@ -27,7 +26,6 @@
      fun deletRecordByuuid(uuid:String)
      {
          employeerepository.deleteRecord(uuid)
-
      }
  }
 

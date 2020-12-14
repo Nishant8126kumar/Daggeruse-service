@@ -10,8 +10,7 @@
  import javax.ws.rs.core.Response
  @Path("/employee")
  class EmployeeResource @Inject constructor(@Named("service") val fretronService: EmployeeService, @Named("objectMapper") val objectMapper :ObjectMapper) {
-//     val fretronService = EmployeeService()
-//     val objectMapper = ObjectMapper()
+
 
      @GET
      @Produces(MediaType.APPLICATION_JSON, MediaType.TEXT_PLAIN)

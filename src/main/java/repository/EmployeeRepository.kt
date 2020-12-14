@@ -26,12 +26,11 @@
          while (mongoCursor!!.hasNext())
          {
              try {
-                 var doc=Document()
-                 doc=mongoCursor.next()
+                 var doc: Document = mongoCursor.next()
                  doc.remove("_id")
                  val json=JSON.serialize(doc)
 
-                 var employees=objectMapper.readValue(json,Employees::class.java)!!
+                 val employees=objectMapper.readValue(json,Employees::class.java)
 
                  empRecord.add(employees)
              } catch (e: Exception) {
@@ -45,17 +44,17 @@
 
          var record= mutableListOf<Employees>()
 
-         var mongoCollection=mongoDatabase?.getCollection("employess")
-         var basicDBObject= BasicDBObject()
+         val mongoCollection=mongoDatabase?.getCollection("employess")
+         val basicDBObject= BasicDBObject()
          basicDBObject["name"] = name
-         var mongoCursor=mongoCollection?.find(basicDBObject)?.iterator()
+         val mongoCursor=mongoCollection?.find(basicDBObject)?.iterator()
          while (mongoCursor!!.hasNext())
          {
              try {
                  var doc= Document()
-                 doc = mongoCursor?.next()
+                 doc = mongoCursor.next()
                  doc.remove("_id")
-//                 var employees=Employees()
+
                  var json=JSON.serialize(doc)
                  var employees=objectMapper.readValue(json,Employees::class.java)
 //                 employees?.let { record.add(it) }
@@ -72,14 +71,13 @@
      {
          try {
              println("Data Co=:$record")
-
-             var mongoCollection=mongoDatabase?.getCollection("employess")
-             var doc=Document.parse(record.toString())
-             doc["uuid"] = getUUid().toString()
-             var mongoCursor=mongoCollection?.insertOne(doc)
-             println("details=:"+mongoCursor)
+             val mongoCollection=mongoDatabase?.getCollection("employess")
+             val doc=Document.parse(record.toString())
+             doc["uuid"] = UUID.randomUUID().toString()
+             val mongoCursor=mongoCollection?.insertOne(doc)
+             println("details=:$mongoCursor")
          } catch (e: Exception) {
-             println("Exception occured=:$e")
+             println("Exception occurred=:$e")
          }
      }
      fun deleteRecord(uuid:String)
@@ -89,16 +87,16 @@
              var basicDBObject=BasicDBObject()
              basicDBObject["uuid"] = uuid
              val mongoCollection=mongoDatabase?.getCollection("employess")
-             var mongoCursor=mongoCollection?.deleteOne(basicDBObject)
+             val mongoCursor=mongoCollection?.deleteOne(basicDBObject)
          } catch (e: Exception) {
              println("Exception=:$e")
          }
      }
-     fun getUUid(): UUID {
-         var id=UUID.randomUUID()
-         println(id);
-         return id;
-     }
+//    private fun getUUid(): UUID {
+//         var id=UUID.randomUUID()
+//         println(id);
+//         return id;
+//     }
  }
  //fun main()
  //{
